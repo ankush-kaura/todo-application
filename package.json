@@ -8,7 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "test": "vitest",
+    "test:unit": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "dexie": "^4.4.1",
@@ -19,19 +23,27 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.2.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-istanbul": "^4.1.2",
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
+    "fake-indexeddb": "^6.2.5",
     "globals": "^17.4.0",
+    "jsdom": "^29.0.1",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.2",
     "vite": "^7.3.1",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.1.2"
   }
 }
