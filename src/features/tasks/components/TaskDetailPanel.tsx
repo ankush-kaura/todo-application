@@ -99,18 +99,19 @@ export function TaskDetailPanel({
     <div className="fixed inset-0 z-40 flex justify-end" role="presentation">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-overlay"
+        className="absolute inset-0 bg-overlay animate-backdrop-in"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Panel */}
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Task details"
+        aria-label={`Edit task: ${task.title}`}
         className={cn(
           "relative z-10 flex h-full w-full max-w-lg flex-col bg-surface shadow-xl",
-          "animate-in slide-in-from-right",
+          "animate-slide-in-right",
         )}
       >
         {/* Header */}
@@ -125,8 +126,8 @@ export function TaskDetailPanel({
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-text-tertiary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
-            aria-label="Close"
+            className="rounded-lg p-1.5 text-text-tertiary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
+            aria-label="Close panel"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

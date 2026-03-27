@@ -40,6 +40,8 @@ export function TaskActions({ onEdit, onDuplicate, onDelete }: TaskActionsProps)
         }}
         className="rounded-md p-1 text-text-tertiary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
         aria-label="Task actions"
+        aria-haspopup="true"
+        aria-expanded={open}
       >
         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -48,8 +50,10 @@ export function TaskActions({ onEdit, onDuplicate, onDelete }: TaskActionsProps)
 
       {open && (
         <div
+          role="menu"
           className={cn(
             "absolute right-0 z-30 mt-1 w-40 rounded-lg border border-border bg-surface py-1 shadow-lg",
+            "animate-scale-in",
           )}
         >
           <button
@@ -58,6 +62,7 @@ export function TaskActions({ onEdit, onDuplicate, onDelete }: TaskActionsProps)
               onEdit();
               close();
             }}
+            role="menuitem"
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary hover:bg-bg-tertiary"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,6 +76,7 @@ export function TaskActions({ onEdit, onDuplicate, onDelete }: TaskActionsProps)
               onDuplicate();
               close();
             }}
+            role="menuitem"
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary hover:bg-bg-tertiary"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,6 +91,7 @@ export function TaskActions({ onEdit, onDuplicate, onDelete }: TaskActionsProps)
               onDelete();
               close();
             }}
+            role="menuitem"
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-danger hover:bg-danger-light"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

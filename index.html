@@ -11,11 +11,16 @@
     <script>
       (function () {
         var theme = localStorage.getItem("theme");
-        if (
+        var isDark =
           theme === "dark" ||
-          (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
+          (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (isDark) {
           document.documentElement.classList.add("dark");
+        }
+        // Set theme-color meta to match initial theme
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+          meta.setAttribute("content", isDark ? "#0f172a" : "#3b82f6");
         }
       })();
     </script>

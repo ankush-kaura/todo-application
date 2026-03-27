@@ -84,7 +84,7 @@ export function Modal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 animate-backdrop-in"
       onClick={handleBackdropClick}
       role="presentation"
     >
@@ -95,7 +95,7 @@ export function Modal({
         aria-label={title}
         className={cn(
           "w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl",
-          "animate-in fade-in zoom-in-95",
+          "animate-scale-in",
           className,
         )}
         {...props}
@@ -105,8 +105,8 @@ export function Modal({
             <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
             <button
               onClick={onClose}
-              className="rounded-lg p-1 text-text-tertiary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
-              aria-label="Close"
+              className="rounded-lg p-1.5 text-text-tertiary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
+              aria-label="Close dialog"
             >
               <svg
                 className="h-5 w-5"

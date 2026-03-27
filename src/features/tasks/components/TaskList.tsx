@@ -116,6 +116,11 @@ export function TaskList() {
 
   return (
     <div className="space-y-4">
+      {/* Screen reader announcements */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+      </div>
+
       {/* Create form */}
       <TaskCreateForm onSubmit={handleCreate} />
 
@@ -138,6 +143,7 @@ export function TaskList() {
       {/* Task list */}
       {tasks.length === 0 ? (
         <EmptyState
+          className="animate-fade-in"
           icon={
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

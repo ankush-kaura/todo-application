@@ -56,13 +56,16 @@ export function TaskCreateForm({ onSubmit }: TaskCreateFormProps) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-surface p-3 transition-shadow",
-        expanded && "shadow-md",
+        "rounded-xl border border-border bg-surface p-3 transition-all duration-200",
+        expanded && "shadow-md border-primary/30",
       )}
     >
       <div className="flex items-center gap-2">
         <svg
-          className="h-5 w-5 shrink-0 text-primary"
+          className={cn(
+            "h-5 w-5 shrink-0 text-primary transition-transform duration-200",
+            expanded && "rotate-90",
+          )}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -82,16 +85,17 @@ export function TaskCreateForm({ onSubmit }: TaskCreateFormProps) {
           onKeyDown={handleKeyDown}
           placeholder="Add a task... (Enter to create)"
           className="h-8 flex-1 bg-transparent text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none"
+          aria-label="New task title"
         />
         {title.trim() && (
-          <Button size="sm" onClick={handleSubmit}>
+          <Button size="sm" onClick={handleSubmit} className="animate-fade-in">
             Add
           </Button>
         )}
       </div>
 
       {expanded && (
-        <div className="mt-3 flex flex-wrap items-end gap-3 border-t border-border pt-3">
+        <div className="animate-expand mt-3 flex flex-wrap items-end gap-3 border-t border-border pt-3">
           <div className="w-36">
             <Select
               label="Priority"

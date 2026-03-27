@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
@@ -19,11 +19,27 @@ function getEffectiveTheme(): Theme {
 }
 
 function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+
+  // Enable smooth theme transition
+  root.classList.add("theme-transitioning");
+
   if (theme === "dark") {
-    document.documentElement.classList.add("dark");
+    root.classList.add("dark");
   } else {
-    document.documentElement.classList.remove("dark");
+    root.classList.remove("dark");
   }
+
+  // Update meta theme-color for browser chrome
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute("content", theme === "dark" ? "#0f172a" : "#3b82f6");
+  }
+
+  // Remove transition class after animation completes
+  setTimeout(() => {
+    root.classList.remove("theme-transitioning");
+  }, 350);
 }
 
 const listeners = new Set<() => void>();
@@ -39,8 +55,23 @@ function getSnapshot(): Theme {
   return getEffectiveTheme();
 }
 
+// Listen for system theme changes
+const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+mediaQuery.addEventListener("change", () => {
+  // Only react to system changes if user hasn't set a manual preference
+  if (getStoredTheme() === null) {
+    applyTheme(getEffectiveTheme());
+    listeners.forEach((l) => l());
+  }
+});
+
 export function useTheme() {
   const theme = useSyncExternalStore(subscribe, getSnapshot);
+
+  // Ensure theme is applied on mount (handles SSR hydration edge case)
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = useCallback((newTheme: Theme) => {
     localStorage.setItem("theme", newTheme);

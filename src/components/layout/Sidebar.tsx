@@ -12,12 +12,14 @@ export function Sidebar({ open, onClose, className }: SidebarProps) {
       {/* Mobile overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-30 bg-overlay md:hidden"
+          className="fixed inset-0 z-30 bg-overlay animate-backdrop-in md:hidden"
           onClick={onClose}
+          aria-hidden="true"
         />
       )}
 
       <aside
+        aria-label="Sidebar navigation"
         className={cn(
           "fixed top-14 left-0 z-40 flex h-[calc(100vh-3.5rem)] w-64 flex-col border-r border-border bg-bg-secondary transition-transform duration-200",
           "md:translate-x-0",
@@ -25,8 +27,8 @@ export function Sidebar({ open, onClose, className }: SidebarProps) {
           className,
         )}
       >
-        <nav className="flex-1 overflow-y-auto p-4">
-          <div className="space-y-1">
+        <nav className="flex-1 overflow-y-auto p-4" aria-label="Main navigation">
+          <div className="space-y-1" role="list">
             <SidebarLink icon={<InboxIcon />} label="All Tasks" active />
             <SidebarLink icon={<TodayIcon />} label="Today" />
             <SidebarLink icon={<UpcomingIcon />} label="Upcoming" />
@@ -37,7 +39,7 @@ export function Sidebar({ open, onClose, className }: SidebarProps) {
             <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary">
               Projects
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-1" role="list">
               <SidebarLink icon={<DotIcon color="text-primary" />} label="Personal" />
               <SidebarLink icon={<DotIcon color="text-success" />} label="Work" />
             </div>
@@ -59,10 +61,12 @@ function SidebarLink({
 }) {
   return (
     <button
+      role="listitem"
+      aria-current={active ? "page" : undefined}
       className={cn(
-        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
         active
-          ? "bg-primary-light text-primary"
+          ? "bg-primary-light text-primary shadow-sm"
           : "text-text-secondary hover:bg-bg-tertiary hover:text-text-primary",
       )}
     >
@@ -74,7 +78,7 @@ function SidebarLink({
 
 function InboxIcon() {
   return (
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
     </svg>
   );
@@ -82,7 +86,7 @@ function InboxIcon() {
 
 function TodayIcon() {
   return (
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
     </svg>
   );
@@ -90,7 +94,7 @@ function TodayIcon() {
 
 function UpcomingIcon() {
   return (
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   );
@@ -98,7 +102,7 @@ function UpcomingIcon() {
 
 function CompletedIcon() {
   return (
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   );
@@ -106,7 +110,7 @@ function CompletedIcon() {
 
 function DotIcon({ color }: { color: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={cn("h-5 w-5", color)} fill="currentColor">
+    <svg viewBox="0 0 24 24" className={cn("h-5 w-5", color)} fill="currentColor" aria-hidden="true">
       <circle cx="12" cy="12" r="4" />
     </svg>
   );
