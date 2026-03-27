@@ -39,7 +39,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           target.style.height = "auto";
           target.style.height = `${target.scrollHeight}px`;
         }
-        onInput?.(e);
+        onInput?.(e as unknown as React.InputEvent<HTMLTextAreaElement>);
       },
       [autoGrow, onInput],
     );
