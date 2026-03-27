@@ -5,6 +5,18 @@ import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
 export default defineConfig({
+  build: {
+    target: "es2020",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          state: ["zustand", "immer"],
+        },
+      },
+    },
+    reportCompressedSize: true,
+  },
   plugins: [
     react(),
     tailwindcss(),
