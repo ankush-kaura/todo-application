@@ -1,11 +1,30 @@
+import { AppShell } from "@/components/layout";
+import { EmptyState, ToastProvider } from "@/components/ui";
+
 function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="rounded-xl bg-white p-8 shadow-lg">
-        <h1 className="text-3xl font-bold text-blue-600">Todo Application</h1>
-        <p className="mt-2 text-gray-600">Project setup complete.</p>
-      </div>
-    </div>
+    <ToastProvider>
+      <AppShell>
+        <EmptyState
+          icon={
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+          }
+          title="No tasks yet"
+          description="Create your first task to get started with organizing your day."
+        />
+      </AppShell>
+    </ToastProvider>
   );
 }
 
