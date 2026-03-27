@@ -1,9 +1,15 @@
 import { AppShell } from "@/components/layout";
-import { EmptyState, ToastProvider } from "@/components/ui";
+import {
+  EmptyState,
+  OfflineBanner,
+  SWUpdatePrompt,
+  ToastProvider,
+} from "@/components/ui";
 
 function App() {
   return (
     <ToastProvider>
+      <OfflineBanner />
       <AppShell>
         <EmptyState
           icon={
@@ -24,6 +30,7 @@ function App() {
           description="Create your first task to get started with organizing your day."
         />
       </AppShell>
+      <SWUpdatePrompt />
     </ToastProvider>
   );
 }

@@ -7,3 +7,5 @@ export { Badge } from "./Badge";
 export { Modal } from "./Modal";
 export { EmptyState } from "./EmptyState";
 export { ToastProvider, useToast } from "./Toast";
+export { OfflineBanner } from "./OfflineBanner";
+export { SWUpdatePrompt } from "./SWUpdatePrompt";
