@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { TaskStatus, TaskPriority, TaskSortField, SortDirection } from '../types';
 
+export type SidebarView = 'all' | 'today' | 'upcoming' | 'completed';
+
 interface ActiveFilters {
   status: TaskStatus[];
   priority: TaskPriority[];
@@ -11,6 +13,7 @@ interface ActiveFilters {
 
 interface UIState {
   sidebarOpen: boolean;
+  sidebarView: SidebarView;
   activeFilters: ActiveFilters;
   sortField: TaskSortField;
   sortDirection: SortDirection;
@@ -19,6 +22,7 @@ interface UIState {
 interface UIActions {
   toggleSidebar(): void;
   setSidebarOpen(open: boolean): void;
+  setSidebarView(view: SidebarView): void;
   setStatusFilter(statuses: TaskStatus[]): void;
   setPriorityFilter(priorities: TaskPriority[]): void;
   setTagFilter(tags: string[]): void;
@@ -41,6 +45,7 @@ export const useUIStore = create<UIStore>()(
   persist(
     (set) => ({
       sidebarOpen: true,
+      sidebarView: 'all' as SidebarView,
       activeFilters: { ...EMPTY_FILTERS },
       sortField: 'order',
       sortDirection: 'asc',
@@ -51,6 +56,10 @@ export const useUIStore = create<UIStore>()(
 
       setSidebarOpen(open) {
         set({ sidebarOpen: open });
+      },
+
+      setSidebarView(view) {
+        set({ sidebarView: view });
       },
 
       setStatusFilter(statuses) {
