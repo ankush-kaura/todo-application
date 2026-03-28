@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { startOfDay, endOfDay, addDays } from "date-fns";
 import type { Task, CreateTaskInput } from "@/types";
 import { useTaskStore } from "@/store";
+import { useUIStore } from "@/store/ui-store";
 import { useToast, EmptyState, Button } from "@/components/ui";
 import { TaskItem } from "./TaskItem";
 import { TaskCreateForm } from "./TaskCreateForm";
@@ -9,8 +11,36 @@ import { TaskDetailPanel } from "./TaskDetailPanel";
 
 const TASK_ROW_HEIGHT = 48;
 
+function useFilteredTasks(allTasks: Task[]): Task[] {
+  const sidebarView = useUIStore((s) => s.sidebarView);
+
+  return useMemo(() => {
+    switch (sidebarView) {
+      case "today": {
+        const todayEnd = endOfDay(new Date()).getTime();
+        const todayStart = startOfDay(new Date()).getTime();
+        return allTasks.filter(
+          (t) => t.status !== "done" && t.dueDate != null && t.dueDate >= todayStart && t.dueDate <= todayEnd,
+        );
+      }
+      case "upcoming": {
+        const tomorrowStart = startOfDay(addDays(new Date(), 1)).getTime();
+        return allTasks.filter(
+          (t) => t.status !== "done" && t.dueDate != null && t.dueDate >= tomorrowStart,
+        );
+      }
+      case "completed":
+        return allTasks.filter((t) => t.status === "done");
+      case "all":
+      default:
+        return allTasks;
+    }
+  }, [allTasks, sidebarView]);
+}
+
 export function TaskList() {
-  const tasks = useTaskStore((s) => s.tasks);
+  const allTasks = useTaskStore((s) => s.tasks);
+  const tasks = useFilteredTasks(allTasks);
   const isLoading = useTaskStore((s) => s.isLoading);
   const loadTasks = useTaskStore((s) => s.loadTasks);
   const addTask = useTaskStore((s) => s.addTask);
@@ -56,7 +86,7 @@ export function TaskList() {
 
   const handleDuplicate = useCallback(
     async (id: string) => {
-      const task = tasks.find((t) => t.id === id);
+      const task = allTasks.find((t) => t.id === id);
       if (!task) return;
       const input: CreateTaskInput = { title: `${task.title} (copy)`, priority: task.priority };
       if (task.description != null) input.description = task.description;
@@ -65,7 +95,7 @@ export function TaskList() {
       await addTask(input);
       toast("Task duplicated", "success");
     },
-    [tasks, addTask, toast],
+    [allTasks, addTask, toast],
   );
 
   const handleDelete = useCallback(
@@ -97,8 +127,29 @@ export function TaskList() {
   }, [detailTaskId, handleDelete]);
 
   const detailTask = detailTaskId
-    ? tasks.find((t) => t.id === detailTaskId)
+    ? allTasks.find((t) => t.id === detailTaskId)
     : undefined;
+
+  const sidebarView = useUIStore((s) => s.sidebarView);
+  let emptyTitle: string;
+  let emptyDescription: string;
+  switch (sidebarView) {
+    case "today":
+      emptyTitle = "Nothing due today";
+      emptyDescription = "Tasks with today's due date will appear here.";
+      break;
+    case "upcoming":
+      emptyTitle = "No upcoming tasks";
+      emptyDescription = "Tasks with future due dates will appear here.";
+      break;
+    case "completed":
+      emptyTitle = "No completed tasks";
+      emptyDescription = "Completed tasks will appear here.";
+      break;
+    default:
+      emptyTitle = "No tasks yet";
+      emptyDescription = "Create your first task above to get started.";
+  }
 
   if (!loaded || isLoading) {
     return (
@@ -154,8 +205,8 @@ export function TaskList() {
               />
             </svg>
           }
-          title="No tasks yet"
-          description="Create your first task above to get started."
+          title={emptyTitle}
+          description={emptyDescription}
           action={
             <Button
               variant="primary"

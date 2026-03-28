@@ -1,5 +1,5 @@
 export { useTaskStore } from './task-store';
-export { useUIStore } from './ui-store';
+export { useUIStore, type SidebarView } from './ui-store';
 
 import type { TaskPriority } from '@/types';
 

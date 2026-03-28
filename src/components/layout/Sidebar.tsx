@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { useUIStore, type SidebarView } from "@/store/ui-store";
 
 interface SidebarProps {
   open: boolean;
@@ -6,7 +7,23 @@ interface SidebarProps {
   className?: string;
 }
 
+const NAV_ITEMS: { view: SidebarView; label: string; icon: React.ReactNode }[] = [
+  { view: "all", label: "All Tasks", icon: <InboxIcon /> },
+  { view: "today", label: "Today", icon: <TodayIcon /> },
+  { view: "upcoming", label: "Upcoming", icon: <UpcomingIcon /> },
+  { view: "completed", label: "Completed", icon: <CompletedIcon /> },
+];
+
 export function Sidebar({ open, onClose, className }: SidebarProps) {
+  const sidebarView = useUIStore((s) => s.sidebarView);
+  const setSidebarView = useUIStore((s) => s.setSidebarView);
+
+  const handleNavClick = (view: SidebarView) => {
+    setSidebarView(view);
+    // Close sidebar on mobile after selection
+    onClose();
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -29,10 +46,15 @@ export function Sidebar({ open, onClose, className }: SidebarProps) {
       >
         <nav className="flex-1 overflow-y-auto p-4" aria-label="Main navigation">
           <div className="space-y-1" role="list">
-            <SidebarLink icon={<InboxIcon />} label="All Tasks" active />
-            <SidebarLink icon={<TodayIcon />} label="Today" />
-            <SidebarLink icon={<UpcomingIcon />} label="Upcoming" />
-            <SidebarLink icon={<CompletedIcon />} label="Completed" />
+            {NAV_ITEMS.map((item) => (
+              <SidebarLink
+                key={item.view}
+                icon={item.icon}
+                label={item.label}
+                active={sidebarView === item.view}
+                onClick={() => handleNavClick(item.view)}
+              />
+            ))}
           </div>
 
           <div className="mt-8">
@@ -54,15 +76,18 @@ function SidebarLink({
   icon,
   label,
   active = false,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   active?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
       role="listitem"
       aria-current={active ? "page" : undefined}
+      onClick={onClick}
       className={cn(
         "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
         active
