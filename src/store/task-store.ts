@@ -224,7 +224,7 @@ export const useTaskStore = create<TaskStore>()(
 
       set((s) => {
         const [moved] = s.tasks.splice(sourceIndex, 1);
-        s.tasks.splice(destIndex, 0, moved!);
+        s.tasks.splice(destIndex, 0, moved as Task);
         s.tasks.forEach((t, i) => {
           t.order = i;
           t.updatedAt = Date.now();
@@ -255,7 +255,7 @@ export const useTaskStore = create<TaskStore>()(
       }
 
       if (filters.tags && filters.tags.length > 0) {
-        result = result.filter((t) => filters.tags!.some((tag) => t.tags?.includes(tag)));
+        result = result.filter((t) => filters.tags?.some((tag) => t.tags?.includes(tag)));
       }
 
       if (filters.search) {

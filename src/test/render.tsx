@@ -2,9 +2,7 @@ import { render, type RenderOptions } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactElement } from "react";
 
-interface ProviderOptions {
-  // Extend as providers are added (theme, store, etc.)
-}
+type ProviderOptions = Record<string, never>;
 
 function AllProviders({ children }: { children: React.ReactNode }) {
   // Wrap with providers as they are created (e.g., StoreProvider, ThemeProvider)

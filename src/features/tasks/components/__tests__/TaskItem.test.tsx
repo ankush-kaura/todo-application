@@ -65,7 +65,7 @@ describe('TaskItem', () => {
     const { user } = renderWithProviders(
       <TaskItem task={task} {...defaultProps} onClick={onClick} />,
     );
-    await user.click(screen.getByRole('button', { name: /Buy|Test/i }).closest('[role="button"]')!);
+    await user.click(screen.getByRole('button', { name: /Buy|Test/i }).closest('[role="button"]') as HTMLElement);
     expect(onClick).toHaveBeenCalledWith('t1');
   });
 
@@ -75,7 +75,8 @@ describe('TaskItem', () => {
     const { user } = renderWithProviders(
       <TaskItem task={task} {...defaultProps} onClick={onClick} />,
     );
-    const row = screen.getAllByRole('button')[0]!.closest('[role="button"]')!;
+    const buttons = screen.getAllByRole('button');
+    const row = buttons[0]?.closest('[role="button"]') as HTMLElement;
     row.focus();
     await user.keyboard('{Enter}');
     expect(onClick).toHaveBeenCalledWith('t1');

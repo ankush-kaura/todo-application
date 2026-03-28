@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '@/test/render';
 
-vi.mock('@/store/task-store', () => {
-  const { create } = require('zustand');
+vi.mock('@/store/task-store', async () => {
+  const { create } = await import('zustand');
   const useTaskStore = create(() => ({
     tasks: [],
     isLoading: false,
