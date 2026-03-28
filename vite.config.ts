@@ -5,6 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
 export default defineConfig({
+  base: "/todo-application/",
   build: {
     target: "es2020",
     rollupOptions: {
@@ -58,8 +59,8 @@ export default defineConfig({
         theme_color: "#3b82f6",
         background_color: "#ffffff",
         display: "standalone",
-        start_url: "/",
-        scope: "/",
+        start_url: "/todo-application/",
+        scope: "/todo-application/",
         icons: [
           {
             src: "pwa-192x192.png",
